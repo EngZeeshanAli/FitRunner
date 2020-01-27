@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Fit Runner</string>
+    <string name="open_draw">Open navigation drawer</string>
+    <string name="close_draw">Close navigation drawer</string>
+
+    <string name="title_activity_splash_screen">SplashScreen</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+</resources>
