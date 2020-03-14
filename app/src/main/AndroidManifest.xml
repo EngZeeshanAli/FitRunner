@@ -38,7 +38,7 @@
         <activity android:name=".MusicPlayer.PlayerActivity" />
         <activity
             android:name=".MainActivity"
-            android:theme="@style/AppThemeFull"></activity>
+            android:theme="@style/AppThemeFull" />
 
         <meta-data
             android:name="preloaded_fonts"
