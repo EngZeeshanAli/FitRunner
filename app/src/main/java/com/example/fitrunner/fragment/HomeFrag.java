@@ -1,13 +1,11 @@
 package com.example.fitrunner.fragment;
 
-import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
+import android.location.Location;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.LayoutInflater;
@@ -19,17 +17,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.fitrunner.MapWay;
 import com.example.fitrunner.R;
-import com.karumi.dexter.Dexter;
-import com.karumi.dexter.PermissionToken;
-import com.karumi.dexter.listener.PermissionDeniedResponse;
-import com.karumi.dexter.listener.PermissionGrantedResponse;
-import com.karumi.dexter.listener.PermissionRequest;
-import com.karumi.dexter.listener.single.PermissionListener;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
 
-public class HomeFrag extends Fragment implements View.OnClickListener {
+public class HomeFrag extends Fragment implements View.OnClickListener, OnMapReadyCallback {
     Button startRunning;
+    GoogleMap map;
 
     @Nullable
     @Override
@@ -42,66 +39,10 @@ public class HomeFrag extends Fragment implements View.OnClickListener {
     void init(View v) {
         startRunning = v.findViewById(R.id.start_runiing_home);
         startRunning.setOnClickListener(this);
-    }
+        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
+                .findFragmentById(R.id.map_home);
+        mapFragment.getMapAsync(HomeFrag.this);
 
-
-    void permissions() {
-        if (getActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && getActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            askGpsPermissions();
-        } else {
-
-            if (checkGpsStatus() == false) {
-                AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
-                builder1.setMessage("Turn On GPS To Use Location Service....");
-                builder1.setCancelable(false);
-                builder1.setPositiveButton(
-                        "Go",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                Intent gps = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                                startActivity(gps);
-                            }
-                        });
-                AlertDialog alert11 = builder1.create();
-                alert11.show();
-
-            }
-            if (getContext().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && getContext().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                Intent start = new Intent(getActivity(), MapWay.class);
-                startActivity(start);
-            } else {
-                if (getContext().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED || getContext().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_DENIED) {
-                    permissionDenied();
-                }
-            }
-        }
-    }
-
-
-    private void permissionDenied() {
-        AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
-        builder1.setMessage("Location  permission is neccesary.\n Go to setting to give permission? ");
-        builder1.setCancelable(false);
-        builder1.setPositiveButton(
-                "Go",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                                Uri.fromParts("package", getActivity().getPackageName(), null));
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
-                    }
-                });
-
-        builder1.setNegativeButton(
-                "No",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        getActivity().finish();
-                    }
-                });
-        AlertDialog alert11 = builder1.create();
-        alert11.show();
     }
 
     public boolean checkGpsStatus() {
@@ -110,32 +51,49 @@ public class HomeFrag extends Fragment implements View.OnClickListener {
         return gpsStatus;
     }
 
-    void askGpsPermissions() {
-        Dexter.withActivity(getActivity())
-                .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-                .withListener(new PermissionListener() {
-                    @Override
-                    public void onPermissionGranted(PermissionGrantedResponse response) {
-
-                    }
-
-                    @Override
-                    public void onPermissionDenied(PermissionDeniedResponse response) {
-                        permissionDenied();
-                    }
-
-                    @Override
-                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {/* ... */}
-                }).check();
-    }
-
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.start_runiing_home:
-                permissions();
                 break;
         }
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        map = googleMap;
+        googleMap.getUiSettings().setScrollGesturesEnabled(false);
+        if (checkGpsStatus() == false) {
+            AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
+            builder1.setMessage("Turn On GPS To Use Location Service....");
+            builder1.setCancelable(false);
+            builder1.setPositiveButton(
+                    "Go",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            Intent gps = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                            startActivity(gps);
+                        }
+                    });
+            AlertDialog alert11 = builder1.create();
+            alert11.show();
+        }
+        if (checkGpsStatus()) {
+            map.setMyLocationEnabled(true);
+            if (map != null) {
+                map.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
+                    @Override
+                    public void onMyLocationChange(Location arg0) {
+                        map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(arg0.getLatitude(), arg0.getLongitude()), 18));
+                    }
+                });
+            }
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 }

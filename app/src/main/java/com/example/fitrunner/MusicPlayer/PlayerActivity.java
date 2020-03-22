@@ -1,10 +1,8 @@
 package com.example.fitrunner.MusicPlayer;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-
 import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
@@ -28,7 +26,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
 
     Button pause, next, previous;
     TextView songNameText;
-    @SuppressLint("NewApi")
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,13 +79,12 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
 
 
     void playMusic() {
-        if (mp.isPlaying()) {
+        if (mp.isPlaying() || mp.getCurrentPosition() > 1) {
             mp.stop();
             mp.release();
             mp = null;
             mp = new MediaPlayer();
         }
-
         Music music = mySongs.get(position);
         songNameText.setText(music.getTitle());
         songNameText.setSelected(true);
@@ -106,27 +103,27 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
 
     }
 
-    void setUpdateSeekBar(final int total){
-        final int current=mp.getCurrentPosition();
+    void setUpdateSeekBar(final int total) {
+        final int current = mp.getCurrentPosition();
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (current<total){
+                if (current < total) {
                     sb.setProgress(current);
                     setUpdateSeekBar(total);
-                }else{
+                } else {
                     return;
                 }
 
             }
-        },1000);
+        }, 1000);
     }
 
     void setNextSong() {
-        if (position < mySongs.size()-1) {
+        if (position < mySongs.size() - 1) {
             position = position + 1;
         } else {
-            if (position >= mySongs.size()-1) {
+            if (position >= mySongs.size() - 1) {
                 position = 0;
             }
         }
@@ -135,11 +132,11 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     void setPreviousSong() {
-        if (position <=0 ) {
-            position = mySongs.size()-1;
+        if (position <= 0) {
+            position = mySongs.size() - 1;
         } else {
             if (position > 0) {
-                position = position-1;
+                position = position - 1;
             }
         }
 
@@ -179,5 +176,9 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
                 setPreviousSong();
                 break;
         }
+    }
+
+    public MediaPlayer getPlayer() {
+        return mp;
     }
 }

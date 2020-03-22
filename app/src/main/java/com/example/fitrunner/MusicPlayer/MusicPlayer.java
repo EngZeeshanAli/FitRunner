@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,6 +15,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SeekBar;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -35,6 +35,7 @@ public class MusicPlayer extends AppCompatActivity {
     ArrayList<Music> list;
     ListView songList;
     String[] songNames;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +45,7 @@ public class MusicPlayer extends AppCompatActivity {
         }
         if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
             permissionDenied();
-        }else{
+        } else {
             init();
         }
 
@@ -56,28 +57,18 @@ public class MusicPlayer extends AppCompatActivity {
         musicList();
         songList = findViewById(R.id.listView);
         ArrayAdapter<String> adp = new
-                ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,songNames);
+                ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, songNames);
         songList.setAdapter(adp);
         songList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                Intent startPlayer=new Intent(MusicPlayer.this,PlayerActivity.class);
-                startPlayer.putExtra("pos",String.valueOf(position));
-                startPlayer.putExtra("sl",toJsonMusic());
+                Intent startPlayer = new Intent(MusicPlayer.this, PlayerActivity.class);
+                startPlayer.putExtra("pos", String.valueOf(position));
+                startPlayer.putExtra("sl", toJsonMusic());
                 startActivity(startPlayer);
-
-//                MediaPlayer p=new MediaPlayer();
-//                try {
-//                    p.setDataSource("/storage/emulated/0/GBWhatsApp/Media/GBWhatsApp Audio/AUD-20191210-WA0027.mp3");
-//                    p.prepare();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//                p.start();
-
             }
         });
+        player();
     }
 
     void requestPermissions() {
@@ -142,28 +133,47 @@ public class MusicPlayer extends AppCompatActivity {
                 list.add(music);
             } while (cursor.moveToNext());
 
-            songNames=new String[list.size()];
-            for (int i=0; i<list.size(); i++){
-                Music music=list.get(i);
-                songNames[i]=music.getTitle();
+            songNames = new String[list.size()];
+            for (int i = 0; i < list.size(); i++) {
+                Music music = list.get(i);
+                songNames[i] = music.getTitle();
             }
         }
     }
 
-    String [] toJsonMusic(){
-        Music music=new Music();
-        String [] items=new String[list.size()];
-        for (int o=0;o<list.size();o++){
-            Music m=list.get(o);
-            items[o]=music.getJsonObject(m);
+    String[] toJsonMusic() {
+        Music music = new Music();
+        String[] items = new String[list.size()];
+        for (int o = 0; o < list.size(); o++) {
+            Music m = list.get(o);
+            items[o] = music.getJsonObject(m);
         }
         return items;
     }
 
+    void player() {
+        PlayerActivity playerActivity = new PlayerActivity();
+        final MediaPlayer player = playerActivity.getPlayer();
+        if (player != null && player.getCurrentPosition() > 1) {
+            SeekBar bar = findViewById(R.id.seekBar_main);
+            bar.setMax(player.getDuration());
+            bar.setProgress(player.getCurrentPosition());
+            bar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
+                    seekBar.setProgress(seekBar.getProgress());
+                }
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+                    player.seekTo(seekBar.getProgress());
+                }
+            });
+        }
     }
 }
 

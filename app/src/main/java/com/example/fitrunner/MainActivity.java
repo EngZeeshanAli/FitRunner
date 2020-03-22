@@ -59,11 +59,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    void getFormData() {
-//        if (TextUtils.isEmpty()) {
-//      }
-
-    }
 
 
     @Override
