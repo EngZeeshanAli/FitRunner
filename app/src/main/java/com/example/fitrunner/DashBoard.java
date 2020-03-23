@@ -21,6 +21,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.fitrunner.MusicPlayer.MusicPlayer;
+import com.example.fitrunner.fragment.Calculator;
 import com.example.fitrunner.fragment.HomeFrag;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
@@ -112,7 +113,7 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
                 drawer.closeDrawer(GravityCompat.START);
                 break;
             case R.id.calculator:
-                //getSupportFragmentManager().beginTransaction().replace(R.id.frag_container, new HomeFrag()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.frag_container, new Calculator()).commit();
                 drawer.closeDrawer(GravityCompat.START);
                 break;
 

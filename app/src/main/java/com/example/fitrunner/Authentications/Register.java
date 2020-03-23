@@ -1,5 +1,6 @@
 package com.example.fitrunner.Authentications;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -16,14 +17,23 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.fitrunner.MainActivity;
 import com.example.fitrunner.R;
+import com.example.fitrunner.UiControllers.Constants;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class Register extends Fragment implements View.OnClickListener {
     EditText name, email, password;
     Button register;
     TextView signIn;
-    String nameS,emailS,passwordS;
+    String nameS, emailS, passwordS;
+    ProgressDialog dialog;
 
     @Nullable
     @Override
@@ -39,34 +49,36 @@ public class Register extends Fragment implements View.OnClickListener {
         password = v.findViewById(R.id.password_register);
         register = v.findViewById(R.id.sign_up);
         register.setOnClickListener(this);
-        signIn=v.findViewById(R.id.go_to_singin);
+        signIn = v.findViewById(R.id.go_to_singin);
         signIn.setOnClickListener(this);
     }
 
-    void getFormData(){
-        if(TextUtils.isEmpty(name.getText().toString())){
+    boolean getFormData() {
+        if (TextUtils.isEmpty(name.getText().toString())) {
             name.setError("REQUIRED");
-            return;
+            return false;
         }
-        if(TextUtils.isEmpty(email.getText().toString())){
+        if (TextUtils.isEmpty(email.getText().toString())) {
             email.setError("REQUIRED");
-            return;
+            return false;
         }
-        if(!email.getText().toString().contains("@")){
+        if (!email.getText().toString().contains("@")) {
             email.setError("Bad Formated Email");
-            return;
+            return false;
         }
-        if(TextUtils.isEmpty(password.getText().toString())){
+        if (TextUtils.isEmpty(password.getText().toString())) {
             password.setError("REQUIRED");
-            return;
+            return false;
         }
-        if (password.getText().length()<8){
+        if (password.getText().length() < 8) {
             password.setError("Must 8 Char");
-            return;
+            return false;
+        } else {
+            nameS = name.getText().toString();
+            emailS = email.getText().toString();
+            passwordS = password.getText().toString();
+            return true;
         }
-        nameS=name.getText().toString();
-        emailS=email.getText().toString();
-        passwordS=password.getText().toString();
     }
 
     public void slidleft(Fragment fragment) {
@@ -80,16 +92,68 @@ public class Register extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.sign_up:
-                getFormData();
-                Toast.makeText(getContext(), "Sign Up", Toast.LENGTH_SHORT).show();
+                if (getFormData()) {
+                    signUpNewUser();
+                }
+
 
                 break;
             case R.id.go_to_singin:
-               slidleft(new Login());
+                slidleft(new Login());
                 break;
         }
+    }
+
+    private void signUpNewUser() {
+        dialog = new ProgressDialog(getContext());
+        dialog.setTitle("Processing");
+        dialog.setMessage("Please wait while we are processing.");
+        dialog.setCancelable(false);
+        dialog.show();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        mAuth.createUserWithEmailAndPassword(emailS, passwordS).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    FirebaseUser newUser = FirebaseAuth.getInstance().getCurrentUser();
+                    newUser.sendEmailVerification();
+
+                    User user = new User(nameS, emailS, newUser.getUid());
+                    saveUserInfo(user);
+                    FirebaseAuth.getInstance().signOut();
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                dialog.dismiss();
+                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void saveUserInfo(User user) {
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+        db.child(Constants.USER_TABLE).child(user.uid).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    dialog.dismiss();
+                    Toast.makeText(getContext(), "SignUp Succesfully..", Toast.LENGTH_SHORT).show();
+                    name.setText("");
+                    email.setText("");
+                    password.setText("");
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                dialog.dismiss();
+                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 }

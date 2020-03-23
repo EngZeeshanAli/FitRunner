@@ -1,6 +1,7 @@
 package com.example.fitrunner.Authentications;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,12 +25,19 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.fitrunner.DashBoard;
 import com.example.fitrunner.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class Login extends Fragment implements View.OnClickListener {
     EditText emailE, passwordE;
     String email, password;
     Button signIn;
     TextView forgot, signUp;
+    ProgressDialog dialog;
 
     @Nullable
     @Override
@@ -49,26 +58,29 @@ public class Login extends Fragment implements View.OnClickListener {
         signUp.setOnClickListener(this);
     }
 
-    private void getFormData() {
+    private boolean getFormData() {
 
         if (TextUtils.isEmpty(emailE.getText().toString())) {
             emailE.setError("REQUIRED");
-            return;
+            return false;
         }
         if (!emailE.getText().toString().contains("@")) {
             emailE.setError("Bad Formated Email");
-            return;
+            return false;
         }
         if (TextUtils.isEmpty(passwordE.getText().toString())) {
             passwordE.setError("REQUIRED");
-            return;
+            return false;
         }
         if (passwordE.getText().length() < 8) {
             passwordE.setError("Must 8 Char");
-            return;
+            return false;
+        } else {
+            email = emailE.getText().toString();
+            password = passwordE.getText().toString();
+            return true;
         }
-        email = emailE.getText().toString();
-        password = passwordE.getText().toString();
+
     }
 
     public void slidleft(Fragment fragment) {
@@ -107,7 +119,10 @@ public class Login extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.sign_in:
-                startActivity(new Intent(getContext(), DashBoard.class));
+                if (getFormData()) {
+                    setSignin();
+                }
+
                 break;
             case R.id.go_to_singup:
                 slidleft(new Register());
@@ -115,6 +130,51 @@ public class Login extends Fragment implements View.OnClickListener {
             case R.id.forgot:
                 forgetPaswword();
                 break;
+        }
+    }
+
+    private void setSignin() {
+        dialog = new ProgressDialog(getContext());
+        dialog.setTitle("Processing");
+        dialog.setMessage("Please wait while we are athenticating..");
+        dialog.setCancelable(false);
+        dialog.show();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                    if (user.isEmailVerified()) {
+                        updateUi(user);
+                    } else {
+                        dialog.dismiss();
+                        Toast.makeText(getContext(), "Please Verify Your Email...", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+            }
+        });
+    }
+
+    void updateUi(FirebaseUser user) {
+        if (user != null) {
+            startActivity(new Intent(getContext(), DashBoard.class));
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (user != null && user.isEmailVerified()) {
+            updateUi(user);
         }
     }
 }
