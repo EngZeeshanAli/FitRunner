@@ -7,7 +7,7 @@
     android:background="#2A4755">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/circleImageView2"
+        android:id="@+id/img_dashboard"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:src="@drawable/home"
@@ -19,7 +19,7 @@
         app:layout_constraintVertical_bias="0.392" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/name_dashboard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/berkshire_swash"
@@ -27,23 +27,23 @@
         android:textColor="@color/colorWhite"
         android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/circleImageView2"
+        app:layout_constraintEnd_toEndOf="@+id/img_dashboard"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/circleImageView2"
-        app:layout_constraintTop_toBottomOf="@+id/circleImageView2"
+        app:layout_constraintStart_toStartOf="@+id/img_dashboard"
+        app:layout_constraintTop_toBottomOf="@+id/img_dashboard"
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/email_dashboard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="example@gmail.com"
         android:textColor="#9EFFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/textView"
+        app:layout_constraintEnd_toEndOf="@+id/name_dashboard"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintStart_toStartOf="@+id/name_dashboard"
+        app:layout_constraintTop_toBottomOf="@+id/name_dashboard"
         app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

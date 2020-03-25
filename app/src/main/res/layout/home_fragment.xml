@@ -53,56 +53,62 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.11" />
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/circleImageView"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/home"
-        app:layout_constraintBottom_toBottomOf="@+id/todayStep"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.556"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/todayStep2"
-        app:layout_constraintVertical_bias="1.0" />
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/img_home_frag"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/home"
+            app:layout_constraintBottom_toBottomOf="@+id/todayStep"
+            app:layout_constraintEnd_toStartOf="@+id/linearLayout2"
+            app:layout_constraintHorizontal_bias="0.818"
+            app:layout_constraintStart_toEndOf="@+id/todayStep2"
+            app:layout_constraintTop_toTopOf="@+id/todayStep2"
+            app:layout_constraintVertical_bias="0.0" />
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="@+id/circleImageView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/circleImageView"
-        app:layout_constraintTop_toTopOf="@+id/circleImageView">
-
-        <TextView
+        <LinearLayout
+            android:id="@+id/linearLayout2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/berkshire_swash"
-            android:text="Zeshan Ali"
-            android:textColor="@color/colorWhite"
-            android:textSize="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="@+id/img_home_frag"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.051"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.248" />
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/todayStep2"
+            app:layout_constraintTop_toTopOf="@+id/img_home_frag"
+            app:layout_constraintVertical_bias="0.29">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="12311631 (steps)"
-            android:textColor="@color/colorWhite"
-            android:textSize="14dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.051"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.404" />
-    </LinearLayout>
+            <TextView
+                android:id="@+id/name_home_frag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/berkshire_swash"
+                android:text="Zeshan Ali"
+                android:textColor="@color/colorWhite"
+                android:textSize="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.051"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.248" />
 
-    <Button
+            <TextView
+                android:id="@+id/email_home_frag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:text="example@email.com"
+                android:textColor="@color/colorWhite"
+                android:textSize="14dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.051"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.404" />
+        </LinearLayout>
+
+        <Button
         android:id="@+id/start_runiing_home"
         android:layout_width="200dp"
         android:layout_height="40dp"

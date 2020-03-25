@@ -56,18 +56,20 @@ public class MusicPlayer extends AppCompatActivity {
         list = new ArrayList<>();
         musicList();
         songList = findViewById(R.id.listView);
-        ArrayAdapter<String> adp = new
-                ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, songNames);
-        songList.setAdapter(adp);
-        songList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent startPlayer = new Intent(MusicPlayer.this, PlayerActivity.class);
-                startPlayer.putExtra("pos", String.valueOf(position));
-                startPlayer.putExtra("sl", toJsonMusic());
-                startActivity(startPlayer);
-            }
-        });
+        if(songNames!=null) {
+            ArrayAdapter<String> adp = new
+                    ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, songNames);
+            songList.setAdapter(adp);
+            songList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Intent startPlayer = new Intent(MusicPlayer.this, PlayerActivity.class);
+                    startPlayer.putExtra("pos", String.valueOf(position));
+                    startPlayer.putExtra("sl", toJsonMusic());
+                    startActivity(startPlayer);
+                }
+            });
+        }
         player();
     }
 

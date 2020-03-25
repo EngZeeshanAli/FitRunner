@@ -1,8 +1,11 @@
 package com.example.fitrunner;
 
+import android.app.Dialog;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -17,9 +20,11 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MapWay extends AppCompatActivity implements OnMapReadyCallback {
+public class MapWay extends AppCompatActivity implements OnMapReadyCallback, View.OnClickListener {
     private GoogleMap mMap;
     List<LatLng> latlngs = new ArrayList<>();
+    LatLng endPoint;
+    Button end,endingPoint;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +33,10 @@ public class MapWay extends AppCompatActivity implements OnMapReadyCallback {
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        init();
+    }
+    void init(){
+
     }
 
     @Override
@@ -53,5 +62,13 @@ public class MapWay extends AppCompatActivity implements OnMapReadyCallback {
         // Style the polyline
         path.setWidth(10);
         path.setColor(Color.parseColor("#FF0000"));
+    }
+
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+
+        }
     }
 }

@@ -12,21 +12,38 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
+import com.example.fitrunner.Authentications.User;
+import com.example.fitrunner.DashBoard;
+import com.example.fitrunner.MapWay;
 import com.example.fitrunner.R;
+import com.example.fitrunner.UiControllers.Constants;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class HomeFrag extends Fragment implements View.OnClickListener, OnMapReadyCallback {
     Button startRunning;
     GoogleMap map;
+    TextView name, email;
+    CircleImageView img;
 
     @Nullable
     @Override
@@ -42,7 +59,10 @@ public class HomeFrag extends Fragment implements View.OnClickListener, OnMapRea
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.map_home);
         mapFragment.getMapAsync(HomeFrag.this);
-
+        img = v.findViewById(R.id.img_home_frag);
+        name = v.findViewById(R.id.name_home_frag);
+        email = v.findViewById(R.id.email_home_frag);
+        userDetail();
     }
 
     public boolean checkGpsStatus() {
@@ -56,6 +76,7 @@ public class HomeFrag extends Fragment implements View.OnClickListener, OnMapRea
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.start_runiing_home:
+                getActivity().startActivity(new Intent(getActivity(),MapWay.class));
                 break;
         }
     }
@@ -90,6 +111,28 @@ public class HomeFrag extends Fragment implements View.OnClickListener, OnMapRea
                 });
             }
         }
+    }
+
+    void userDetail() {
+        FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+        db.child(Constants.USER_TABLE).child(mUser.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                User user = dataSnapshot.getValue(User.class);
+                name.setText(user.getName());
+                email.setText(user.getEmail());
+                if (getActivity() != null && !getActivity().isFinishing()) {
+                    Glide.with(getContext()).load(user.getImg()).placeholder(R.drawable.home).into(img);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override

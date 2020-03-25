@@ -1,10 +1,20 @@
 package com.example.fitrunner.Authentications;
 
+import androidx.annotation.NonNull;
+
+import com.example.fitrunner.UiControllers.Constants;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 public class User {
     String name;
     String email;
     String img;
     String uid;
+
     public User() {
     }
 
@@ -21,6 +31,7 @@ public class User {
         this.uid = uid;
     }
 
+
     public String getName() {
         return name;
     }
@@ -32,4 +43,6 @@ public class User {
     public String getImg() {
         return img;
     }
+
+
 }
