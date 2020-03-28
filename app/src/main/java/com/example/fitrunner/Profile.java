@@ -105,7 +105,7 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
 
     private void getUserDetail() {
         DatabaseReference db = FirebaseDatabase.getInstance().getReference();
-        db.child(Constants.USER_TABLE).child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+        db.child(Constants.USER_TABLE).child(user.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
@@ -253,7 +253,7 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
                     public void onSuccess(Uri uri) {
                         String imageUrl = uri.toString();
                         DatabaseReference db = FirebaseDatabase.getInstance().getReference();
-                        db.child(Constants.USER_TABLE).child(user.getUid()).child("img").setValue(img)
+                        db.child(Constants.USER_TABLE).child(user.getUid()).child("img").setValue(imageUrl)
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
@@ -274,12 +274,13 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
     }
 
     void setUpdateName(String name) {
+        final ProgressDialog dialog = new ProgressDialog(this);
         DatabaseReference db = FirebaseDatabase.getInstance().getReference();
         db.child(Constants.USER_TABLE).child(user.getUid()).child("name").setValue(name)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        processing.dismiss();
+                        dialog.dismiss();
                     }
                 });
 

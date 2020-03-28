@@ -51,6 +51,7 @@ public class Reports extends Fragment {
     void getReportsList(String child) {
         final ProgressDialog dialog = new ProgressDialog(getContext());
         dialog.setMessage("processing");
+        dialog.setCancelable(false);
         dialog.show();
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
         reference.child(Constants.LOGS_TABLE).child(child).addValueEventListener(new ValueEventListener() {

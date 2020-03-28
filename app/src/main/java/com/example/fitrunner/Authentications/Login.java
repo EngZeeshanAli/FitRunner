@@ -174,7 +174,9 @@ public class Login extends Fragment implements View.OnClickListener {
     void updateUi(FirebaseUser user) {
         if (user != null) {
             startActivity(new Intent(getContext(), DashBoard.class));
+            getActivity().finish();
         }
+
     }
 
     @Override

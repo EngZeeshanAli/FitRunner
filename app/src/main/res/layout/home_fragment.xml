@@ -55,7 +55,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/berkshire_swash"
-                android:text="Zeshan Ali"
+                android:text="Example Name"
                 android:textColor="@color/colorWhite"
                 android:textSize="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
