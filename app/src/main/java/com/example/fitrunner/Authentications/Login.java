@@ -102,6 +102,15 @@ public class Login extends Fragment implements View.OnClickListener {
         builder.setPositiveButton("SEND", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 String mail = edittext.getText().toString();
+                FirebaseAuth.getInstance().sendPasswordResetEmail(mail)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(getContext(), "Send an email to your inbox.", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
 
             }
         });

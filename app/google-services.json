@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_number": "877191959",
+    "firebase_url": "https://fit-runner-64c14.firebaseio.com",
+    "project_id": "fit-runner-64c14",
+    "storage_bucket": "fit-runner-64c14.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:877191959:android:e35206b52550ac0ebb4d52",
+        "android_client_info": {
+          "package_name": "com.example.fitrunner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "877191959-buobjkmnd4re3cc70941ltq0h8e21keb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.fitrunner",
+            "certificate_hash": "203721fef9761821a84a532097383fdc11d61d52"
+          }
+        },
+        {
+          "client_id": "877191959-9q7rh0avof2gbl6ma00vic62ub8p59o2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.fitrunner",
+            "certificate_hash": "713f64c6870327de886a1eff613091124e339a2f"
+          }
+        },
+        {
+          "client_id": "877191959-di05gg674v9j654qimuv2mb8i5nm37q1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBhKoFfOQPTN_GdtO1-3bkuUgZvqcZjl1E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "877191959-di05gg674v9j654qimuv2mb8i5nm37q1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -2,11 +2,12 @@ package com.example.fitrunner.MusicPlayer;
 
 import android.Manifest;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -15,7 +16,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.SeekBar;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -40,15 +40,20 @@ public class MusicPlayer extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_music_player);
-        if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions();
-        }
-        if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
-            permissionDenied();
+        if (isFirstTimeAskingPermission(this)) {
+            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions();
+                firstTimeAskingPermission(this);
+            }
         } else {
-            init();
+            if (!isFirstTimeAskingPermission(this)) {
+                if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+                    permissionDenied();
+                } else {
+                    init();
+                }
+            }
         }
-
     }
 
 
@@ -56,7 +61,7 @@ public class MusicPlayer extends AppCompatActivity {
         list = new ArrayList<>();
         musicList();
         songList = findViewById(R.id.listView);
-        if(songNames!=null) {
+        if (songNames != null) {
             ArrayAdapter<String> adp = new
                     ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, songNames);
             songList.setAdapter(adp);
@@ -70,7 +75,6 @@ public class MusicPlayer extends AppCompatActivity {
                 }
             });
         }
-        player();
     }
 
     void requestPermissions() {
@@ -80,6 +84,7 @@ public class MusicPlayer extends AppCompatActivity {
                     @Override
                     public void onPermissionGranted(PermissionGrantedResponse response) {
                         Toast.makeText(MusicPlayer.this, "Permission Granted", Toast.LENGTH_SHORT).show();
+                        init();
                     }
 
                     @Override
@@ -153,30 +158,23 @@ public class MusicPlayer extends AppCompatActivity {
         return items;
     }
 
-    void player() {
-        PlayerActivity playerActivity = new PlayerActivity();
-        final MediaPlayer player = playerActivity.getPlayer();
-        if (player != null && player.getCurrentPosition() > 1) {
-            SeekBar bar = findViewById(R.id.seekBar_main);
-            bar.setMax(player.getDuration());
-            bar.setProgress(player.getCurrentPosition());
-            bar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-                @Override
-                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                }
+    public static void firstTimeAskingPermission(Context context) {
+        SharedPreferences sharedPreference = context.getSharedPreferences("storage", MODE_PRIVATE);
+        sharedPreference.edit().putBoolean("storage", false).apply();
+    }
 
-                @Override
-                public void onStartTrackingTouch(SeekBar seekBar) {
-                    seekBar.setProgress(seekBar.getProgress());
-                }
+    public static boolean isFirstTimeAskingPermission(Context context) {
+        return context.getSharedPreferences("storage", MODE_PRIVATE).getBoolean("storage", true);
+    }
 
-                @Override
-                public void onStopTrackingTouch(SeekBar seekBar) {
-                    player.seekTo(seekBar.getProgress());
-                }
-            });
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            init();
         }
     }
+
 }
 
 

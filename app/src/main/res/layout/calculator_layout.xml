@@ -12,13 +12,12 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="20dp"
             app:cardCornerRadius="10dp"
             app:cardElevation="10dp"
-            app:contentPadding="15dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="10dp"
-            >
+            app:contentPadding="15dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -30,8 +29,10 @@
                     android:id="@+id/calculator_tv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/berkshire_swash"
                     android:text="calculator"
                     android:textAlignment="center"
+                    android:textColor="#000000"
                     android:textSize="30dp" />
 
                 <TextView
@@ -39,6 +40,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
+                    android:inputType="number"
                     android:text="Distance"
                     android:textSize="20dp" />
 
@@ -72,6 +74,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:hint="hh"
+                        android:inputType="number"
                         android:textSize="14dp" />
 
                     <EditText
@@ -80,6 +83,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:hint="mm"
+                        android:inputType="number"
                         android:textSize="14dp" />
 
                     <EditText
@@ -88,14 +92,17 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:hint="ss"
+                        android:inputType="number"
                         android:textSize="14dp" />
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/paceL"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:orientation="horizontal"
+                    android:visibility="gone"
                     android:weightSum="3">
 
                     <TextView
@@ -104,31 +111,34 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="PACE"
-                        android:textSize="25dp" />
+                        android:textSize="20dp" />
 
                     <TextView
-                        android:id="@+id/calculated_time_tv"
+                        android:id="@+id/calculated_pace_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="00 : 00 : 00"
-                        android:textSize="25dp" />
+                        android:textColor="#3F51B5"
+                        android:textSize="20dp" />
 
                     <TextView
                         android:id="@+id/hr_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="hr"
-                        android:textSize="25dp" />
+                        android:text="hr/km"
+                        android:textSize="20dp" />
 
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/speedL"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:orientation="horizontal"
+                    android:visibility="gone"
                     android:weightSum="3">
 
                     <TextView
@@ -137,7 +147,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="SPEED"
-                        android:textSize="25dp" />
+                        android:textSize="20dp" />
 
                     <TextView
                         android:id="@+id/calculated_speed_tv"
@@ -145,7 +155,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="000"
-                        android:textSize="25dp" />
+                        android:textColor="#3F51B5"
+                        android:textSize="20dp" />
 
                     <TextView
                         android:id="@+id/km_speed_tv"
@@ -153,15 +164,28 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Km/hr"
-                        android:textSize="25dp" />
+                        android:textSize="20dp" />
 
                 </LinearLayout>
 
                 <Button
+                    android:id="@+id/calculat"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:backgroundTint="#E91E63"
                     android:text="CALCULATE PACE"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="20dp" />
+
+                <Button
+                    android:id="@+id/reset"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:backgroundTint="#450C0C"
+                    android:text="Reset"
+                    android:textColor="@color/colorWhite"
                     android:textSize="20dp" />
 
             </LinearLayout>

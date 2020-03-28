@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#E7E6E6"
-    tools:context=".DashBoard">
+    tools:context=".DashBoard"
+    android:fillViewport="true">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -24,46 +25,18 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
-    <TextView
-        android:id="@+id/todayStep2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/berkshire_swash"
-        android:text="Today Steps"
-        android:textColor="@color/colorWhite"
-        android:textSize="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.048"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.068" />
-
-    <TextView
-        android:id="@+id/todayStep"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="12311631 (steps)"
-        android:textColor="@color/colorWhite"
-        android:textSize="14dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/todayStep2"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/todayStep2"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.11" />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/img_home_frag"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:src="@drawable/home"
-            app:layout_constraintBottom_toBottomOf="@+id/todayStep"
-            app:layout_constraintEnd_toStartOf="@+id/linearLayout2"
-            app:layout_constraintHorizontal_bias="0.818"
-            app:layout_constraintStart_toEndOf="@+id/todayStep2"
-            app:layout_constraintTop_toTopOf="@+id/todayStep2"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintBottom_toTopOf="@+id/start_runiing_home"
+            app:layout_constraintEnd_toStartOf="@+id/start_runiing_home"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.534" />
 
         <LinearLayout
             android:id="@+id/linearLayout2"
@@ -72,10 +45,10 @@
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="@+id/img_home_frag"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toEndOf="@+id/todayStep2"
+            app:layout_constraintHorizontal_bias="0.105"
+            app:layout_constraintStart_toEndOf="@+id/img_home_frag"
             app:layout_constraintTop_toTopOf="@+id/img_home_frag"
-            app:layout_constraintVertical_bias="0.29">
+            app:layout_constraintVertical_bias="1.0">
 
             <TextView
                 android:id="@+id/name_home_frag"

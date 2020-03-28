@@ -10,7 +10,6 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
-        android:name=".MusicPlayer.MusicChannel"
         android:allowBackup="true"
         android:icon="@drawable/running"
         android:label="@string/app_name"

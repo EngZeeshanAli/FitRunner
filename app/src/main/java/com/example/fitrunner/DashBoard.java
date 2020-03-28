@@ -28,6 +28,7 @@ import com.example.fitrunner.MusicPlayer.MusicPlayer;
 import com.example.fitrunner.UiControllers.Constants;
 import com.example.fitrunner.fragment.Calculator;
 import com.example.fitrunner.fragment.HomeFrag;
+import com.example.fitrunner.fragment.Reports;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -58,6 +59,7 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dash_board);
         initUi();
+
         if (savedInstanceState == null) {
             permissions();
         }
@@ -115,7 +117,9 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
                 drawer.closeDrawer(GravityCompat.START);
                 break;
             case R.id.logout:
-                Toast.makeText(this, "Logout", Toast.LENGTH_SHORT).show();
+                FirebaseAuth.getInstance().signOut();
+                finish();
+                startActivity(new Intent(DashBoard.this, MainActivity.class));
                 break;
 
             /** Controlling bottom navigation items*/
@@ -124,8 +128,7 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
                 drawer.closeDrawer(GravityCompat.START);
                 break;
             case R.id.reports:
-                Toast.makeText(this, "repots", Toast.LENGTH_SHORT).show();
-                //getSupportFragmentManager().beginTransaction().replace(R.id.frag_container, new HomeFrag()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.frag_container, new Reports()).commit();
                 drawer.closeDrawer(GravityCompat.START);
                 break;
             case R.id.calculator:
@@ -241,15 +244,5 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
             }
         });
     }
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.frag_container, new HomeFrag()).commit();
-        }
-    }
-
 
 }

@@ -11,55 +11,24 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
+        app:layout_constraintBottom_toTopOf="@+id/end"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:context=".MapsActivity" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout3"
+    <TextView
+        android:id="@+id/timer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:background="@color/black_overlay"
         android:padding="10dp"
-        app:layout_constraintBottom_toTopOf="@+id/end"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.985"
-        tools:layout_editor_absoluteX="0dp">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Tap on the map where you want to add ending point."
-            android:textColor="#000000"
-            android:textSize="18dp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="2">
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:backgroundTint="@color/color_red"
-                android:text="reset"
-                android:textColor="@color/colorWhite" />
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:backgroundTint="#E91E63"
-                android:text="save"
-                android:textColor="@color/colorWhite" />
-        </LinearLayout>
-
-    </LinearLayout>
-
+        android:fontFamily="sans-serif-black"
+        android:textAlignment="center"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
     <Button
         android:id="@+id/end"
         android:layout_width="match_parent"
