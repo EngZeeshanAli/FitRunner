@@ -105,7 +105,7 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
 
     private void getUserDetail() {
         DatabaseReference db = FirebaseDatabase.getInstance().getReference();
-        db.child(Constants.USER_TABLE).child(user.getUid()).addValueEventListener(new ValueEventListener() {
+        db.child(Constants.USER_TABLE).child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
